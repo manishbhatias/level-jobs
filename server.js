@@ -155,6 +155,8 @@ function flush(q) {
       });
 
       errorBackoff.once('fail', function() {
+        // Remove from pending once the maximum number of retries is reached.
+        q._pending.del(key, deletedPending);
         q.emit('error', new Error('max retries reached'));
       });
 
